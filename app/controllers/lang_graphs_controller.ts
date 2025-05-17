@@ -2,8 +2,8 @@ import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 import FirstAgentService from '#services/first_agent_service'
 import SecondAgentService from '#services/second_agent_service'
+import { langArchitectureValidator } from '#validators/lang_architecture_validator'
 import AgentInteraction from '#models/agent_interaction'
-import { langPromptValidator } from '#validators/lang_prompt_validator.ts'
 
 @inject()
 export default class LangGraphsController {
@@ -12,29 +12,21 @@ export default class LangGraphsController {
     private secondAgentService: SecondAgentService
   ) {}
 
-  // POST /agents/process
-  async handle({ request }: HttpContext) {
-    const payload = await request.validateUsing(langPromptValidator)
+  public async handle({ request }: HttpContext) {
+    const payload = await request.validateUsing(langArchitectureValidator)
 
-    const firstResult = await this.firstAgentService.all(payload)
-    const finalResult = await this.secondAgentService.all(firstResult)
+    const first = await this.firstAgentService.all(payload)
+    const final = await this.secondAgentService.all({ prompt: first.prompt })
 
     await AgentInteraction.create({
-      prompt: payload.prompt,
-      intermediate: firstResult.intermediate,
-      answer: finalResult.answer,
-      context: payload.context || {},
+      prompt: first.prompt,
+      intermediate: first.prompt,
+      answer: final.answer,
+      context: payload,
       createdAt: new Date(),
       updatedAt: new Date(),
     })
 
-    return finalResult
-  }
-
-  // GET /agents/history
-  async history() {
-    const interactions = await AgentInteraction.query().orderBy('created_at', 'desc').limit(10)
-
-    return interactions
+    return final
   }
 }
