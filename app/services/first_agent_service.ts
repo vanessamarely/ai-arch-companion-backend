@@ -9,7 +9,11 @@ export default class FirstAgentService {
     environment: string
     cloud: string
   }) {
-    const prompt = await architecturePromptTemplate.format(input)
+    // Ensure the prompt includes a clear request for high-level architecture, diagrams in Mermaid, and Terraform code
+    const prompt = await architecturePromptTemplate.format({
+      ...input,
+      request: `Generate a high-level cloud-native architecture for the provided legacy system. Include detailed functional and infrastructure diagrams in Mermaid format, and provide production-ready Terraform code for the proposed AWS infrastructure. All outputs must be actionable, specific, and tailored to the context.`,
+    })
     return {
       ...input,
       prompt,

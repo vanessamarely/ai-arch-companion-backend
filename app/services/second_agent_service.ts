@@ -11,8 +11,9 @@ export default class SecondAgentService {
 
   constructor() {
     const model = new ChatOpenAI({
-      temperature: 0.9,
+      temperature: 0.2, // Lower temperature for more deterministic output
       openAIApiKey: process.env.OPENAI_API_KEY,
+      modelName: 'gpt-4o', // Use GPT-4o for better reasoning and diagram generation
     })
 
     this.pipeline = RunnableSequence.from([
@@ -23,6 +24,7 @@ export default class SecondAgentService {
   }
 
   public async all(input: { prompt: string }) {
+    // Ensure the prompt is passed as expected
     const result = await this.pipeline.invoke(input)
     return {
       ...input,
