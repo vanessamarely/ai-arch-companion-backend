@@ -28,4 +28,5 @@ export default await Env.create(new URL('../', import.meta.url), {
   POSTGRES_PASSWORD: Env.schema.string.optional(),
   POSTGRES_DATABASE: Env.schema.string(),
   DB_DEBUG: Env.schema.boolean.optional(),
+  GITHUB_TOKEN: Env.schema.string(),
 })
