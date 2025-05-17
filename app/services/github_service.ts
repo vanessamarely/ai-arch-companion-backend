@@ -15,9 +15,10 @@ export default class GithubService {
   }
 
   async createRepository(name: string) {
-    const response = await this.octokit.request('POST /orgs/{org}/repos', {
-      org: this.owner,
+    const response = await this.octokit.rest.repos.createForAuthenticatedUser({
       name,
+      description: 'This is a test repository',
+      private: false,
     })
     return response.data
   }
