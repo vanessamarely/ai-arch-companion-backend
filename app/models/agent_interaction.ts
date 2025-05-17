@@ -1,5 +1,3 @@
-// app/models/agent_interaction.ts
-
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 
 export default class AgentInteraction extends BaseModel {

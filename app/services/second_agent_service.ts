@@ -1,8 +1,32 @@
-export default class SecondAgentService {
-  constructor() {}
+import { ChatOpenAI } from '@langchain/openai'
+import { RunnableSequence } from '@langchain/core/runnables'
+import { StringOutputParser } from '@langchain/core/output_parsers'
 
-  public async all(input: { prompt: string; intermediate: string; context?: any }) {
-    const finalAnswer = `Agente 2 respondió basado en: "${input.intermediate}"`
-    return { ...input, answer: finalAnswer }
+/**
+ * Second agent that uses LangChain v0.3+ with RunnableSequence and ChatOpenAI.
+ * It generates a response based on the prompt created by the first agent.
+ */
+export default class SecondAgentService {
+  private pipeline: RunnableSequence<any, any>
+
+  constructor() {
+    const model = new ChatOpenAI({
+      temperature: 0.3,
+      openAIApiKey: process.env.OPENAI_API_KEY,
+    })
+
+    this.pipeline = RunnableSequence.from([
+      (input: { prompt: string }) => input.prompt,
+      model,
+      new StringOutputParser(),
+    ])
+  }
+
+  public async all(input: { prompt: string }) {
+    const result = await this.pipeline.invoke(input)
+    return {
+      ...input,
+      answer: result,
+    }
   }
 }

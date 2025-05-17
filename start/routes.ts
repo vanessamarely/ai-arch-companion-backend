@@ -12,6 +12,8 @@ import router from '@adonisjs/core/services/router'
 const HomeController = () => import('#controllers/home_controller')
 const LangGraphsController = () => import('#controllers/lang_graphs_controller')
 
+//routes
+
 router.get('/', [HomeController, 'index'])
 
 router.post('/agents/process', [LangGraphsController, 'handle'])
