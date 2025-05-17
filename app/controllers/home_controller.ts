@@ -7,7 +7,7 @@ import HomeService from '#services/home_service'
 export default class HomeController {
   constructor(private homeService: HomeService) {}
 
-  async index() {
+  async index({ request }: HttpContext) {
     // const payload = await request.validateUsing(homeValidator)
     return this.homeService.all()
   }
