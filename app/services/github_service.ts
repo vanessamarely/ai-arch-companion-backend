@@ -22,4 +22,15 @@ export default class GithubService {
     })
     return response.data
   }
+
+  async pushFileToRepository(repositoryName: string, filePath: string, content: string) {
+    const response = await this.octokit.rest.repos.createOrUpdateFileContents({
+      owner: this.owner,
+      repo: repositoryName,
+      path: filePath,
+      message: 'Add file',
+      content: Buffer.from(content).toString('base64'),
+    })
+    return response.data
+  }
 }
