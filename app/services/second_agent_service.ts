@@ -11,7 +11,7 @@ export default class SecondAgentService {
 
   constructor() {
     const model = new ChatOpenAI({
-      temperature: 0.3,
+      temperature: 0.9,
       openAIApiKey: process.env.OPENAI_API_KEY,
     })
 
