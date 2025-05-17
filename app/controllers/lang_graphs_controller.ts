@@ -4,7 +4,7 @@ import FirstAgentService from '#services/first_agent_service'
 import SecondAgentService from '#services/second_agent_service'
 import { langArchitectureValidator } from '#validators/lang_architecture_validator'
 import AgentInteraction from '#models/agent_interaction'
-import { parseAnswer } from '../utils/parse_answer.js'
+import { parseAnswer } from '../utils/parse_answer.js' // update path as needed
 
 @inject()
 export default class LangGraphsController {
@@ -13,12 +13,13 @@ export default class LangGraphsController {
     private secondAgentService: SecondAgentService
   ) {}
 
-  public async handle({ request }: HttpContext) {
+  public async handle({ request, response }: HttpContext) {
     const payload = await request.validateUsing(langArchitectureValidator)
 
     const first = await this.firstAgentService.all(payload)
     const final = await this.secondAgentService.all({ prompt: first.prompt })
     const parsed = parseAnswer(final.answer)
+
     await AgentInteraction.create({
       prompt: first.prompt,
       intermediate: first.prompt,
@@ -28,9 +29,17 @@ export default class LangGraphsController {
       updatedAt: new Date(),
     })
 
-    return {
-      ...parsed,
-      original: final.answer,
-    }
+    return response.status(200).send({
+      success: true,
+      data: {
+        diagrams: {
+          functional: parsed.functionalDiagram,
+          infrastructure: parsed.infrastructureDiagram,
+        },
+        rationale: parsed.rationale,
+        terraform: parsed.terraform,
+        architecturalDecisionRecord: parsed.architecturalDecisionRecord,
+      },
+    })
   }
 }
