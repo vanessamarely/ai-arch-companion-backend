@@ -15,4 +15,21 @@ export default class extends BaseSchema {
   // async down() {
   //   this.schema.dropTable(this.tableName)
   // }
+
+  protected tableName = 'agent_interactions'
+  async up() {
+    this.schema.createTable(this.tableName, (table) => {
+      table.increments('id').notNullable()
+      table.text('prompt').notNullable()
+      table.text('intermediate').notNullable()
+      table.text('answer').notNullable()
+      table.jsonb('context').nullable()
+      table.timestamp('created_at').notNullable()
+      table.timestamp('updated_at').nullable()
+    })
+  }
+
+  async down() {
+    this.schema.dropTable(this.tableName)
+  }
 }

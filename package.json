@@ -59,6 +59,7 @@
     "axios": "^1.9.0",
     "langchain": "^0.3.26",
     "luxon": "^3.6.1",
+    "openai": "^4.100.0",
     "pg": "^8.16.0",
     "reflect-metadata": "^0.2.2"
   },
