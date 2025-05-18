@@ -32,10 +32,8 @@ export default class LangGraphsController {
     return response.status(200).send({
       success: true,
       data: {
-        diagrams: {
-          functional: parsed.functionalDiagram,
-          infrastructure: parsed.infrastructureDiagram,
-        },
+        functionalDiagram: parsed.functionalDiaggitram,
+        infrastructureDiagram: parsed.infrastructureDiagram,
         rationale: parsed.rationale,
         terraform: parsed.terraform,
         architecturalDecisionRecord: parsed.architecturalDecisionRecord,

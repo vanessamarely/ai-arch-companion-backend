@@ -8,7 +8,7 @@ export function parseAnswer(answer: string) {
   }
 
   return {
-    functionalDiagram: extract('Functional Application Architecture Diagram', 'mermaid'),
+    functionalDiaggitram: extract('Functional Application Architecture Diagram', 'mermaid'),
     infrastructureDiagram: extract('Cloud Infrastructure Architecture Diagram', 'mermaid'),
     rationale: extract('Rationale'),
     terraform: extract('Infrastructure as Code', 'terraform'),
